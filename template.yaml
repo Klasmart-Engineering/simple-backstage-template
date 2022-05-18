@@ -68,7 +68,7 @@ spec:
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
-        url: ./skeleton
+        url: https://github.com/KL-Engineering/backstage-example-tf-template/tree/main/skeleton
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
@@ -82,23 +82,23 @@ spec:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
         repoUrl: backstage-generated-second-repo
-
-    - id: register
-      name: Register
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps.publish-second.output.repoContentsUrl }}
-        catalogInfoPath: "/catalog-info.yaml"
     
     - id: register
-      name: Register
+      name: Register the first generated repo
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
         catalogInfoPath: "/catalog-info.yaml"
+    
+    - id: register
+      name: Register the second generated repo
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish-second.output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml"
   output:
     links:
-      - title: Repository
+      - title: First Repository
         url: ${{ steps.publish.output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
