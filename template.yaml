@@ -89,14 +89,14 @@ spec:
         force: true
         sourcePath: ./terraform-svc
     
-    - id: register
+    - id: register-first
       name: Register the first generated repo
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish-first.output.repoContentsUrl }}
         catalogInfoPath: "./application-code/catalog-info.yaml"
     
-    - id: register
+    - id: register-second
       name: Register the second generated repo
       action: catalog:register
       input:
