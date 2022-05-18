@@ -93,7 +93,7 @@ spec:
       name: Register the first generated repo
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        repoContentsUrl: ${{ steps.publish-first.output.repoContentsUrl }}
         catalogInfoPath: "./application-code/catalog-info.yaml"
     
     - id: register
