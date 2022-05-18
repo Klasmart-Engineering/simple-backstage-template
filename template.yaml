@@ -81,7 +81,7 @@ spec:
       input:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
-        repoUrl: https://github.com/KL-Engineering/backstage-generated-second-repo
+        repoUrl: https://github.com/KL-Engineering/backstage-example-tf-template
     
     - id: register
       name: Register the first generated repo
