@@ -49,7 +49,8 @@ spec:
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
-        url: ./application-code
+        url: ./template
+        targetPath: ./application-code
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
@@ -63,12 +64,14 @@ spec:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
         repoUrl: ${{ parameters.repoUrl }}
+        sourcePath: ./application-code
  
     - id: template
       name: Fetch second Skeleton + Template
       action: fetch:template
       input:
         url: ./terraform-svc
+        targetPath: ./terraform-svc
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
