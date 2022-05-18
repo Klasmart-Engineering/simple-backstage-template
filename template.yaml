@@ -63,7 +63,7 @@ spec:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
         repoUrl: ${{ parameters.repoUrl }}
-    
+ 
     - id: template
       name: Fetch Skeleton + Template
       action: fetch:template
