@@ -94,14 +94,14 @@ spec:
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/catalog-info.yaml"
+        catalogInfoPath: "./application-code/catalog-info.yaml"
     
     - id: register
       name: Register the second generated repo
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish-second.output.repoContentsUrl }}
-        catalogInfoPath: "/catalog-info.yaml"
+        catalogInfoPath: "./terraform-svc/catalog-info.yaml"
   output:
     links:
       - title: First Repository
