@@ -65,14 +65,14 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
  
     - id: template
-      name: Fetch Skeleton + Template
+      name: Fetch second Skeleton + Template
       action: fetch:template
       input:
         url: https://github.com/KL-Engineering/backstage-example-tf-template/tree/main/skeleton
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
-          destination: ${{ parameters.repoUrl | parseRepoUrl }}
+          destination: ${{parameters.repoUrl}}-tf-svc
           owner: ${{ parameters.owner }}
 
     - id: publish-second
@@ -81,7 +81,7 @@ spec:
       input:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
-        repoUrl: https://github.com/KL-Engineering/backstage-example-tf-template
+        repoUrl: ${{parameters.repoUrl}}-tf-svc
     
     - id: register
       name: Register the first generated repo
