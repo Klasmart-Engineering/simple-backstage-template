@@ -49,7 +49,7 @@ spec:
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
-        url: ./skeleton
+        url: ./application-code
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
@@ -68,7 +68,7 @@ spec:
       name: Fetch second Skeleton + Template
       action: fetch:template
       input:
-        url: https://github.com/KL-Engineering/backstage-example-tf-template/tree/main/skeleton
+        url: ./terraform-svc
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
@@ -82,6 +82,9 @@ spec:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
         repoUrl: ${{parameters.repoUrl}}-tf-svc
+        repoVisibility: "internal"
+        force: true
+        sourcePath: ./terraform-svc
     
     - id: register
       name: Register the first generated repo
