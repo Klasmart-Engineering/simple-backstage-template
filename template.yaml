@@ -46,8 +46,8 @@ spec:
               - github.com
   steps:
     # manifests
-    - id: template
-      name: Fetch Skeleton + Template
+    - id: manifests-template
+      name: Fetch manifests template
       action: fetch:template
       input:
         url: ./manifests
@@ -58,8 +58,8 @@ spec:
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
           owner: ${{ parameters.owner }}
 
-    - id: publish
-      name: Publish local content
+    - id: publish-manifests
+      name: Publish manifests repository
       action: publish:github
       input:
         allowedHosts: ["github.com"]
@@ -69,7 +69,7 @@ spec:
 
     # terraform-env
     - id: terraform-env-template
-      name: Fetch Skeleton + Template
+      name: Fetch terraform env template
       action: fetch:template
       input:
         url: ./terraform-env
@@ -81,7 +81,7 @@ spec:
           owner: ${{ parameters.owner }}
 
     - id: publish-terraform-env
-      name: Publish local content
+      name: Publish terraform env repository
       action: publish:github
       input:
         allowedHosts: ["github.com"]
@@ -91,7 +91,7 @@ spec:
     
     # terraform-meta
     - id: terraform-meta-template
-      name: Fetch Skeleton + Template
+      name: Fetch terraform meta template
       action: fetch:template
       input:
         url: ./terraform-meta
@@ -103,7 +103,7 @@ spec:
           owner: ${{ parameters.owner }}
 
     - id: publish-terraform-meta
-      name: Publish local content
+      name: Publish terraform meta repository
       action: publish:github
       input:
         allowedHosts: ["github.com"]
@@ -113,7 +113,7 @@ spec:
 
     # terraform-svc
     - id: terraform-svc-template
-      name: Fetch second Skeleton + Template
+      name: Fetch terraform services template
       action: fetch:template
       input:
         url: ./terraform-svc
@@ -124,8 +124,8 @@ spec:
           destination: ${{parameters.repoUrl}}-tf-svc
           owner: ${{ parameters.owner }}
 
-    - id: publish-second
-      name: Publish second repository
+    - id: publish-terraform-svc
+      name: Publish terraform services repository
       action: publish:github
       input:
         allowedHosts: ["github.com"]
@@ -139,7 +139,7 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        repoContentsUrl: ${{ steps.publish-manifests.output.repoContentsUrl }}
         catalogInfoPath: "/catalog-info.yaml" 
     # - id: register-first
     #   name: Register the first generated repo
@@ -150,7 +150,7 @@ spec:
   output:
     links:
       - title: First Repository
-        url: ${{ steps.publish.output.remoteUrl }}
+        url: ${{ steps.publish-manifests.output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
