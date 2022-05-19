@@ -77,7 +77,7 @@ spec:
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
-          destination: ${{ parameters.repoUrl | parseRepoUrl }}-tf-env
+          destination: ${{ parameters.repoUrl + "-tf-env"| parseRepoUrl }}
           owner: ${{ parameters.owner }}
 
     - id: publish-terraform-env
@@ -86,7 +86,7 @@ spec:
       input:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
-        repoUrl: ${{ parameters.repoUrl }}-tf-env
+        repoUrl: ${{ parameters.repoUrl + "-tf-env" }}
         sourcePath: ./terraform-env
     
     # terraform-meta
@@ -99,7 +99,7 @@ spec:
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
-          destination: ${{ parameters.repoUrl | parseRepoUrl }}-tf-meta
+          destination: ${{ parameters.repoUrl + "-tf-meta" | parseRepoUrl }}
           owner: ${{ parameters.owner }}
 
     - id: publish-terraform-meta
@@ -108,7 +108,7 @@ spec:
       input:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
-        repoUrl: ${{ parameters.repoUrl }}-tf-meta
+        repoUrl: ${{ parameters.repoUrl + "-tf-meta"}}
         sourcePath: ./terraform-meta
 
     # terraform-svc
@@ -121,7 +121,7 @@ spec:
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
-          destination: ${{parameters.repoUrl}}-tf-svc
+          destination: ${{ parameters.repoUrl + "-tf-svc" | parseRepoUrl }}
           owner: ${{ parameters.owner }}
 
     - id: publish-terraform-svc
@@ -130,7 +130,7 @@ spec:
       input:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
-        repoUrl: ${{parameters.repoUrl}}-tf-svc
+        repoUrl: ${{parameters.repoUrl + "-tf-svc"}}
         repoVisibility: "internal"
         force: true
         sourcePath: ./terraform-svc
