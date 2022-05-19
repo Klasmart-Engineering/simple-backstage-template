@@ -1,9 +1,9 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: factory-simple-backstage-template
-  title: Factory Simple Backstage Template
-  description: Create a service from a template
+  name: factory-microgateway-template
+  title: Factory Micro Gateway Template
+  description: Generate the repositories required to run a new Micro Gateway on the Factory Platform
   tags:
     - factory
     - go
