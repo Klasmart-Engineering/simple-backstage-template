@@ -57,7 +57,7 @@ spec:
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
           owner: ${{ parameters.owner }}
 
-    - id: publish-first
+    - id: publish
       name: Publish local content
       action: publish:github
       input:
@@ -92,8 +92,8 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: '{{ steps.publish-first.output.repoContentsUrl }}'
-        catalogInfoPath: '/catalog-info.yaml' 
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml" 
     # - id: register-first
     #   name: Register the first generated repo
     #   action: catalog:register
