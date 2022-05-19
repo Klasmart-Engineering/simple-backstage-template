@@ -45,12 +45,13 @@ spec:
             allowedHosts:
               - github.com
   steps:
+    # manifests
     - id: template
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
-        url: ./application-code
-        targetPath: ./application-code
+        url: ./manifests
+        targetPath: ./manifests
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
@@ -64,9 +65,54 @@ spec:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
         repoUrl: ${{ parameters.repoUrl }}
-        sourcePath: ./application-code
- 
-    - id: template
+        sourcePath: ./manifests
+
+    # terraform-env
+    - id: terraform-env-template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./terraform-env
+        targetPath: ./terraform-env
+        values:
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}-tf-env
+          owner: ${{ parameters.owner }}
+
+    - id: publish-terraform-env
+      name: Publish local content
+      action: publish:github
+      input:
+        allowedHosts: ["github.com"]
+        description: This is ${{ parameters.component_id }}
+        repoUrl: ${{ parameters.repoUrl }}-tf-env
+        sourcePath: ./terraform-env
+    
+    # terraform-meta
+    - id: terraform-meta-template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./terraform-meta
+        targetPath: ./terraform-meta
+        values:
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}-tf-meta
+          owner: ${{ parameters.owner }}
+
+    - id: publish-terraform-meta
+      name: Publish local content
+      action: publish:github
+      input:
+        allowedHosts: ["github.com"]
+        description: This is ${{ parameters.component_id }}
+        repoUrl: ${{ parameters.repoUrl }}-tf-meta
+        sourcePath: ./terraform-meta
+
+    # terraform-svc
+    - id: terraform-svc-template
       name: Fetch second Skeleton + Template
       action: fetch:template
       input:
@@ -88,6 +134,7 @@ spec:
         repoVisibility: "internal"
         force: true
         sourcePath: ./terraform-svc
+
     - id: register
       name: Register
       action: catalog:register
