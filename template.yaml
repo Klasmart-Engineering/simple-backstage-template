@@ -135,11 +135,32 @@ spec:
         force: true
         sourcePath: ./terraform-svc
 
-    - id: register
-      name: Register
+    - id: register-manifests
+      name: Register manifests
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps['publish-manifests'].output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml" 
+    
+    - id: register-terraform-env
+      name: Register terraform environment
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-terraform-env'].output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml" 
+  
+    - id: register-terraform-meta
+      name: Register terraform meta
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-terraform-meta'].output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml" 
+
+    - id: register-terraform-svc
+      name: Register terraform services
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-terraform-svc'].output.repoContentsUrl }}
         catalogInfoPath: "/catalog-info.yaml" 
     # - id: register-first
     #   name: Register the first generated repo
@@ -149,8 +170,23 @@ spec:
     #     catalogInfoPath: "/catalog-info.yaml"
   output:
     links:
-      - title: First Repository
-        url: ${{ steps.publish-manifests.output.remoteUrl }}
+      - title: Manifests Repository
+        url: ${{ steps.['publish-manifests'].output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
-        entityRef: ${{ steps.register.output.entityRef }}
+        entityRef: ${{ steps.['register-manifests'].output.entityRef }}
+      - title: Terraform environment
+        url: ${{ steps.['publish-terraform-env'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.['publish-terraform-env'].output.entityRef }}
+      - title: Terraform meta
+        url: ${{ steps.['publish-terraform-meta'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.['publish-terraform-meta'].output.entityRef }}
+      - title: Terraform services
+        url: ${{ steps.['publish-terraform-svc'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.['publish-terraform-svc'].output.entityRef }}
