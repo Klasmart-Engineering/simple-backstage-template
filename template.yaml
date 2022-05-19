@@ -103,7 +103,7 @@ spec:
   output:
     links:
       - title: First Repository
-        url: ${{ steps.publish-first.output.remoteUrl }}
+        url: ${{ steps.publish.output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
-        entityRef: ${{ steps.register-first.output.entityRef }}
+        entityRef: ${{ steps.register.output.entityRef }}
