@@ -55,7 +55,7 @@ spec:
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
-          destination: ${{ parameters.repoUrl | parseRepoUrl }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}-manifests
           owner: ${{ parameters.owner }}
 
     - id: publish-manifests
@@ -64,7 +64,7 @@ spec:
       input:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
-        repoUrl: ${{ parameters.repoUrl }}
+        repoUrl: ${{ parameters.repoUrl }}-manifests
         sourcePath: ./manifests
 
     # terraform-env
@@ -139,7 +139,7 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.publish-manifests.output.repoContentsUrl }}
+        repoContentsUrl: ${{ steps['publish-manifests'].output.repoContentsUrl }}
         catalogInfoPath: "/catalog-info.yaml" 
     # - id: register-first
     #   name: Register the first generated repo
