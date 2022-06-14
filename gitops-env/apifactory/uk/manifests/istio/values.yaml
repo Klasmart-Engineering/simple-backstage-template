@@ -1,0 +1,9 @@
+istio-microgateway-networking:
+  nameOverride: "${{ values.product_name }}-microgateway"
+  fullNameOverride: ${{ values.product_name }}-microgateway
+  domain: apifactory.kidsloop.live
+  subdomain: ${{ values.product_name }}
+  serviceName: ${{ values.product_name }}-microgateway
+  istio:
+    certIssuerName: letsencrypt-istio-dns
+    namespace: istio-system

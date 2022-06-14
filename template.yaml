@@ -50,7 +50,7 @@ spec:
             allowedHosts:
               - github.com
   steps:
-    # manifests
+    # common-infra
     - id: common-infra-template
       name: Common infrastructure
       action: fetch:template
@@ -73,73 +73,53 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}-common-infra 
         sourcePath: ./common-infra 
 
-    # # terraform-env
-    # - id: terraform-env-template
-    #   name: Fetch terraform env template
-    #   action: fetch:template
-    #   input:
-    #     url: ./terraform-env
-    #     targetPath: ./terraform-env
-    #     values:
-    #       component_id: ${{ parameters.component_id }}
-    #       description: ${{ parameters.description }}
-    #       destination: ${{ parameters.repoUrl + "-tf-env"| parseRepoUrl }}
-    #       owner: ${{ parameters.owner }}
+    # gitops-env
+    - id: gitops-env-template
+      name: Fetch terraform env template
+      action: fetch:template
+      input:
+        url: ./gitops-env
+        targetPath: ./gitops-env
+        values:
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
+          destination: ${{ parameters.repoUrl + "-tf-env"| parseRepoUrl }}
+          owner: ${{ parameters.owner }}
+          product_name: ${{ parameters.product_name }}
 
-    # - id: publish-terraform-env
-    #   name: Publish terraform env repository
-    #   action: publish:github
-    #   input:
-    #     allowedHosts: ["github.com"]
-    #     description: This is ${{ parameters.component_id }}
-    #     repoUrl: ${{ parameters.repoUrl + "-tf-env" }}
-    #     sourcePath: ./terraform-env
+    - id: publish-gitops-env
+      name: Publish terraform env repository
+      action: publish:github
+      input:
+        allowedHosts: ["github.com"]
+        description: This is ${{ parameters.component_id }}
+        repoUrl: ${{ parameters.repoUrl + "-tf-env" }}
+        sourcePath: ./gitops-env
     
-    # # terraform-meta
-    # - id: terraform-meta-template
-    #   name: Fetch terraform meta template
-    #   action: fetch:template
-    #   input:
-    #     url: ./terraform-meta
-    #     targetPath: ./terraform-meta
-    #     values:
-    #       component_id: ${{ parameters.component_id }}
-    #       description: ${{ parameters.description }}
-    #       destination: ${{ parameters.repoUrl + "-tf-meta" | parseRepoUrl }}
-    #       owner: ${{ parameters.owner }}
+    # terraform-svc
+    - id: terraform-svc-template
+      name: Fetch terraform services template
+      action: fetch:template
+      input:
+        url: ./terraform-svc
+        targetPath: ./terraform-svc
+        values:
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
+          destination: ${{ parameters.repoUrl + "-tf-svc" | parseRepoUrl }}
+          owner: ${{ parameters.owner }}
+          product_name: ${{ parameters.product_name }}
 
-    # - id: publish-terraform-meta
-    #   name: Publish terraform meta repository
-    #   action: publish:github
-    #   input:
-    #     allowedHosts: ["github.com"]
-    #     description: This is ${{ parameters.component_id }}
-    #     repoUrl: ${{ parameters.repoUrl + "-tf-meta"}}
-    #     sourcePath: ./terraform-meta
-
-    # # terraform-svc
-    # - id: terraform-svc-template
-    #   name: Fetch terraform services template
-    #   action: fetch:template
-    #   input:
-    #     url: ./terraform-svc
-    #     targetPath: ./terraform-svc
-    #     values:
-    #       component_id: ${{ parameters.component_id }}
-    #       description: ${{ parameters.description }}
-    #       destination: ${{ parameters.repoUrl + "-tf-svc" | parseRepoUrl }}
-    #       owner: ${{ parameters.owner }}
-
-    # - id: publish-terraform-svc
-    #   name: Publish terraform services repository
-    #   action: publish:github
-    #   input:
-    #     allowedHosts: ["github.com"]
-    #     description: This is ${{ parameters.component_id }}
-    #     repoUrl: ${{parameters.repoUrl + "-tf-svc"}}
-    #     repoVisibility: "internal"
-    #     force: true
-    #     sourcePath: ./terraform-svc
+    - id: publish-terraform-svc
+      name: Publish terraform services repository
+      action: publish:github
+      input:
+        allowedHosts: ["github.com"]
+        description: This is ${{ parameters.component_id }}
+        repoUrl: ${{parameters.repoUrl + "-tf-svc"}}
+        repoVisibility: "internal"
+        force: true
+        sourcePath: ./terraform-svc
 
     - id: register-common-infra
       name: Register common infrastructure
@@ -148,26 +128,19 @@ spec:
         repoContentsUrl: ${{ steps['publish-common-infra'].output.repoContentsUrl }}
         catalogInfoPath: "/catalog-info.yaml" 
     
-    # - id: register-terraform-env
-    #   name: Register terraform environment
-    #   action: catalog:register
-    #   input:
-    #     repoContentsUrl: ${{ steps['publish-terraform-env'].output.repoContentsUrl }}
-    #     catalogInfoPath: "/catalog-info.yaml" 
+    - id: register-gitops-env
+      name: Register gitops environment
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-gitops-env'].output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml" 
   
-    # - id: register-terraform-meta
-    #   name: Register terraform meta
-    #   action: catalog:register
-    #   input:
-    #     repoContentsUrl: ${{ steps['publish-terraform-meta'].output.repoContentsUrl }}
-    #     catalogInfoPath: "/catalog-info.yaml" 
-
-    # - id: register-terraform-svc
-    #   name: Register terraform services
-    #   action: catalog:register
-    #   input:
-    #     repoContentsUrl: ${{ steps['publish-terraform-svc'].output.repoContentsUrl }}
-    #     catalogInfoPath: "/catalog-info.yaml" 
+    - id: register-terraform-svc
+      name: Register terraform services
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-terraform-svc'].output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml" 
     
   output:
     links:
@@ -176,18 +149,13 @@ spec:
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps.['register-common-infra'].output.entityRef }}
-      # - title: Terraform environment
-      #   url: ${{ steps.['publish-terraform-env'].output.remoteUrl }}
-      # - title: Open in catalog
-      #   icon: catalog
-      #   entityRef: ${{ steps.['publish-terraform-env'].output.entityRef }}
-      # - title: Terraform meta
-      #   url: ${{ steps.['publish-terraform-meta'].output.remoteUrl }}
-      # - title: Open in catalog
-      #   icon: catalog
-      #   entityRef: ${{ steps.['publish-terraform-meta'].output.entityRef }}
-      # - title: Terraform services
-      #   url: ${{ steps.['publish-terraform-svc'].output.remoteUrl }}
-      # - title: Open in catalog
-      #   icon: catalog
-      #   entityRef: ${{ steps.['publish-terraform-svc'].output.entityRef }}
+      - title: Terraform environment
+        url: ${{ steps.['publish-gitops-env'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.['register-gitops-env'].output.entityRef }}
+      - title: Terraform services
+        url: ${{ steps.['publish-terraform-svc'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.['register-terraform-svc'].output.entityRef }}

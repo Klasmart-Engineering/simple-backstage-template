@@ -23,5 +23,5 @@ locals {
   domain                  = "apifactory.kidsloop.live"
   env_repo_default_branch = "main"
   working_directory       = "apifactory/uk/tools"
-  workspace_description   = "w${{ values.product_name }} workspace"
+  workspace_description   = "${{ values.product_name }} workspace"
 }
