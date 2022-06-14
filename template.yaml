@@ -51,12 +51,12 @@ spec:
               - github.com
   steps:
     # manifests
-    - id: common-infrastructure-template
+    - id: common-infra-template
       name: Common infrastructure
       action: fetch:template
       input:
-        url: ./common-infrastructure
-        targetPath: ./common-infrastructure
+        url: ./common-infra
+        targetPath: ./common-infra
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
@@ -64,14 +64,14 @@ spec:
           owner: ${{ parameters.owner }}
           product_name: ${{ parameters.product_name }}
 
-    - id: publish-common-infrastructure
-      name: Publish common-infrastructure repository
+    - id: publish-common-infra
+      name: Publish common-infra repository
       action: publish:github
       input:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
-        repoUrl: ${{ parameters.repoUrl }}-common-infrastructure 
-        sourcePath: ./common-infrastructure 
+        repoUrl: ${{ parameters.repoUrl }}-common-infra 
+        sourcePath: ./common-infra 
 
     # # terraform-env
     # - id: terraform-env-template
@@ -141,11 +141,11 @@ spec:
     #     force: true
     #     sourcePath: ./terraform-svc
 
-    - id: register-common-infrastructure
+    - id: register-common-infra
       name: Register common infrastructure
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish-common-infrastructure'].output.repoContentsUrl }}
+        repoContentsUrl: ${{ steps['publish-common-infra'].output.repoContentsUrl }}
         catalogInfoPath: "/catalog-info.yaml" 
     
     # - id: register-terraform-env
@@ -172,10 +172,10 @@ spec:
   output:
     links:
       - title: Common Infrastructure Repository
-        url: ${{ steps.['publish-common-infrastructure'].output.remoteUrl }}
+        url: ${{ steps.['publish-common-infra'].output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
-        entityRef: ${{ steps.['register-common-infrastructure'].output.entityRef }}
+        entityRef: ${{ steps.['register-common-infra'].output.entityRef }}
       # - title: Terraform environment
       #   url: ${{ steps.['publish-terraform-env'].output.remoteUrl }}
       # - title: Open in catalog
