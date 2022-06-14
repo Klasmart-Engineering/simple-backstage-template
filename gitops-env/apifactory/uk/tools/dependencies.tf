@@ -15,7 +15,7 @@ data "tfe_outputs" "cluster" {
 
 data "tfe_outputs" "common-infrastructure" {
   organization = local.terraform_organization
-  workspace    = "subscriptions-common-infrastructure"
+  workspace    = "${{ values.product_name }}-common-infrastructure"
 }
 
 data "tfe_outputs" "cluster-infra-tools" {

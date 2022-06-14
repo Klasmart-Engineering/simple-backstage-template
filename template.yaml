@@ -83,7 +83,7 @@ spec:
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
-          destination: ${{ parameters.repoUrl + "-tf-env"| parseRepoUrl }}
+          destination: ${{ parameters.repoUrl + "-gitops-env"| parseRepoUrl }}
           owner: ${{ parameters.owner }}
           product_name: ${{ parameters.product_name }}
 
@@ -93,7 +93,7 @@ spec:
       input:
         allowedHosts: ["github.com"]
         description: This is ${{ parameters.component_id }}
-        repoUrl: ${{ parameters.repoUrl + "-tf-env" }}
+        repoUrl: ${{ parameters.repoUrl + "-gitops-env" }}
         sourcePath: ./gitops-env
     
     # terraform-svc
