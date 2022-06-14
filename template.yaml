@@ -72,6 +72,29 @@ spec:
         description: This is ${{ parameters.component_id }}
         repoUrl: ${{ parameters.repoUrl }}-common-infra 
         sourcePath: ./common-infra 
+  
+    # microgateway
+    - id: microgateway-template
+      name: Common infrastructure
+      action: fetch:template
+      input:
+        url: ./microgateway-template
+        targetPath: ./microgateway-template
+        values:
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}-microgateway
+          owner: ${{ parameters.owner }}
+          product_name: ${{ parameters.product_name }}
+
+    - id: publish-microgateway
+      name: Publish microgateway repository
+      action: publish:github
+      input:
+        allowedHosts: ["github.com"]
+        description: This is ${{ parameters.component_id }}
+        repoUrl: ${{ parameters.repoUrl }}-microgateway
+        sourcePath: ./microgateway
 
     # gitops-env
     - id: gitops-env-template
@@ -128,6 +151,13 @@ spec:
         repoContentsUrl: ${{ steps['publish-common-infra'].output.repoContentsUrl }}
         catalogInfoPath: "/catalog-info.yaml" 
     
+    - id: register-microgateway
+      name: Register microgateway
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-'microgateway].output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml" 
+
     - id: register-gitops-env
       name: Register gitops environment
       action: catalog:register
