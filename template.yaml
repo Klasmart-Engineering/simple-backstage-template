@@ -75,7 +75,7 @@ spec:
   
     # microgateway
     - id: microgateway-template
-      name: Common infrastructure
+      name: microgateway
       action: fetch:template
       input:
         url: ./microgateway-template
@@ -155,7 +155,7 @@ spec:
       name: Register microgateway
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish-'microgateway].output.repoContentsUrl }}
+        repoContentsUrl: ${{ steps['publish-microgateway'].output.repoContentsUrl }}
         catalogInfoPath: "/catalog-info.yaml" 
 
     - id: register-gitops-env
@@ -179,6 +179,11 @@ spec:
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps.['register-common-infra'].output.entityRef }}
+      - title: Microgateway
+        url: ${{ steps.['publish-microgateway'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.['register-microgateway'].output.entityRef }}
       - title: Terraform environment
         url: ${{ steps.['publish-gitops-env'].output.remoteUrl }}
       - title: Open in catalog
