@@ -1,4 +1,4 @@
-# Microgateway Template
+# ${{ values.product_name }} Microgateway 
 
 A starter template to help teams create their own microgateway
 
